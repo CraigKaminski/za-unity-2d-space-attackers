@@ -6,6 +6,10 @@ public class Player : MonoBehaviour {
 
     public float speed = 1.5f;
     public float horizontalLimit = 2.5f;
+    public float firingSpeed = 3f;
+    public GameObject missilePrefab;
+
+    private bool fired = false;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +33,22 @@ public class Player : MonoBehaviour {
         {
             transform.position = new Vector3(-horizontalLimit, transform.position.y, transform.position.z);
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        }
+
+        if (Input.GetAxis("Fire1") == 1f)
+        {
+            if (fired == false)
+            {
+                fired = true;
+                GameObject missileInstance = Instantiate(missilePrefab);
+                missileInstance.transform.SetParent(transform);
+                missileInstance.transform.position = transform.position;
+                missileInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(0, firingSpeed);
+                Destroy(missileInstance, 2f);
+            }
+        } else
+        {
+            fired = false;
         }
 	}
 }
