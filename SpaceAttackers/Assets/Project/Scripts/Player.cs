@@ -7,9 +7,11 @@ public class Player : MonoBehaviour {
     public float speed = 1.5f;
     public float horizontalLimit = 2.5f;
     public float firingSpeed = 3f;
+    public float firingCooldownDuration = 1f;
     public GameObject missilePrefab;
 
     private bool fired = false;
+    private float cooldownTimer;
 
 	// Use this for initialization
 	void Start () {
@@ -35,11 +37,15 @@ public class Player : MonoBehaviour {
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         }
 
+        cooldownTimer -= Time.deltaTime;
         if (Input.GetAxis("Fire1") == 1f)
         {
-            if (fired == false)
+            if (cooldownTimer <= 0 && fired == false)
             {
                 fired = true;
+
+                cooldownTimer = firingCooldownDuration;
+
                 GameObject missileInstance = Instantiate(missilePrefab);
                 missileInstance.transform.SetParent(transform);
                 missileInstance.transform.position = transform.position;
