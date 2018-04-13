@@ -47,7 +47,7 @@ public class Player : MonoBehaviour {
                 cooldownTimer = firingCooldownDuration;
 
                 GameObject missileInstance = Instantiate(missilePrefab);
-                missileInstance.transform.SetParent(transform);
+                missileInstance.transform.SetParent(transform.parent);
                 missileInstance.transform.position = transform.position;
                 missileInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(0, firingSpeed);
                 Destroy(missileInstance, 2f);
