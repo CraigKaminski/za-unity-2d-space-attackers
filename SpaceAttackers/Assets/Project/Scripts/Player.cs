@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
     public float firingSpeed = 3f;
     public float firingCooldownDuration = 1f;
     public GameObject missilePrefab;
+    public GameObject explosionPrefab;
 
     private bool fired = false;
     private float cooldownTimer;
@@ -57,4 +58,18 @@ public class Player : MonoBehaviour {
             fired = false;
         }
 	}
+
+    private void OnTriggerEnter2D(Collider2D otherCollider)
+    {
+        if (otherCollider.tag == "EnemyMissile")
+        {
+            GameObject explosionInstance = Instantiate(explosionPrefab);
+            explosionInstance.transform.SetParent(transform.parent);
+            explosionInstance.transform.position = transform.position;
+
+            Destroy(explosionInstance, 1.5f);
+            Destroy(gameObject);
+            Destroy(otherCollider.gameObject);
+        }
+    }
 }
