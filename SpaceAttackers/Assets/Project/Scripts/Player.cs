@@ -61,7 +61,7 @@ public class Player : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
-        if (otherCollider.tag == "EnemyMissile")
+        if (otherCollider.tag == "EnemyMissile" || otherCollider.tag == "Enemy")
         {
             GameObject explosionInstance = Instantiate(explosionPrefab);
             explosionInstance.transform.SetParent(transform.parent);
