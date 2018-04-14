@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -8,25 +9,33 @@ public class GameController : MonoBehaviour {
     public float shootingSpeed = 2f;
     public GameObject enemyMissilePrefab;
     public GameObject enemyContainer;
-    public float movingInterval = 0.5f;
+    public Player player;
+    public float maximumMovingInterval = 0.4f;
+    public float minimumMovingInterval = 0.05f;
     public float movingDistance = 0.1f;
     public float horizontalLimit = 2.5f;
 
+    private float movingInterval;
     private float movingDirection = 1;
     private float movingTimer;
     private float shootingTimer;
+    private int enemyCount;
 
 	// Use this for initialization
 	void Start () {
+        movingInterval = maximumMovingInterval;
         movingTimer = movingInterval;
         shootingTimer = shootingInterval;
+        enemyCount = GetComponentsInChildren<Enemy>().Length;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        int currentEnemyCount = GetComponentsInChildren<Enemy>().Length;
+
         shootingTimer -= Time.deltaTime;
 
-        if (shootingTimer <= 0f)
+        if (currentEnemyCount > 0 && shootingTimer <= 0f)
         {
             shootingTimer = shootingInterval;
 
@@ -44,6 +53,8 @@ public class GameController : MonoBehaviour {
 
         if (movingTimer <= 0f)
         {
+            float difficulty = 1f - (float) currentEnemyCount / enemyCount;
+            movingInterval = maximumMovingInterval - (maximumMovingInterval - minimumMovingInterval) * difficulty;
             movingTimer = movingInterval;
 
             enemyContainer.transform.position = new Vector2(
@@ -92,6 +103,11 @@ public class GameController : MonoBehaviour {
                     );
                 }
             }
+        }
+
+        if (currentEnemyCount == 0 || player == null)
+        {
+            SceneManager.LoadScene("Game");
         }
 	}
 }

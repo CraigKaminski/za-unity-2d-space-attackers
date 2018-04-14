@@ -624,8 +624,10 @@ MonoBehaviour:
   enemyMissilePrefab: {fileID: 1205100305331112, guid: 6530db0e6a62c4d4f8de44debb2ccd0f,
     type: 2}
   enemyContainer: {fileID: 403198934}
-  movingInterval: 0.4
-  movingDistance: 0.2
+  player: {fileID: 1407691932}
+  maximumMovingInterval: 0.4
+  minimumMovingInterval: 0.05
+  movingDistance: 0.12
   horizontalLimit: 2.5
 --- !u!4 &558351381 stripped
 Transform:
